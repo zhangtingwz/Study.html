@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+    <head>
+        
+    </head>
+    <body>
+        <script>
+            function Parent(name){
+                this.name=name||"Adam";
+            }
+            Parent.prototype.say=function(){
+                console.log(this.name);
+                return this.name;
+            }
+            function Child(name){
+
+            }
+            //类式继承模式#1默认模式
+            function inherit(C,P){
+                C.prototype=new P();
+            }
+            inherit(Child,Parent);
+            var kid=new Child();
+            kid.say();
+
+            var s=new Child("linpipi");
+            s.say();
+            //缺点每次创建一个新的父类
+            //而且
+            //类式继承模式#2 借用
+            function Child(a,c,b,d){}
+
+          
+            function Article(){
+                this.tags=["js","css"];
+            }
+            var article=new Article();
+
+            function BlogPost(){}
+            BlogPost.prototype=article;
+            var blog=new BlogPost();
+
+            function StaticPage(){
+                Article.call(this);
+            }
+            var page=new StaticPage();
+
+            article.hasOwnProperty("tags");//true
+            blog.hasOwnProperty("tags");//false//通过原型访问
+            page.hasOwnProperty("tags");//true//借用构造函数，获得副本
+            blog.tags.push("html");
+            page.tags.push("php");
+            alert(article.tags.join(","));
+            console.log(article,blog,page);
+
+            function Parent(name){
+                this.name=name||"Adam";
+            }
+            Parent.prototype.say=function(){
+                return this.name;
+            };
+            function Child(name){
+                Parent.apply(this,arguments);
+            }
+            var kid=new Child("Patrick");
+            console.log(kid,kid.name);
+            console.log(kid.say);
+
+            /*通过借用构造函数实现多重继承*/
+            function Cat(){
+                this.legs=4;
+                this.say=function(){
+                    return "meaowww";
+                }
+            }
+
+            function Bird(){
+                this.wings=2;
+                this.fly=true;
+            }
+
+            function CatWings(){
+                Cat.apply(this);
+                Bird.apply(this);
+            }
+
+            var jane=new CatWings();
+            console.dir(jane);
+        </script>
+    </body>
+</html>
